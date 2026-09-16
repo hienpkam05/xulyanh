@@ -1,0 +1,36 @@
+{
+  "2k": {
+    "upload_latency_ms": {
+      "median": 312.987,
+      "max": 312.987
+    },
+    "processing_time_ms": {
+      "median": 312.987,
+      "max": 312.987
+    },
+    "process_cpu_time_ms": {
+      "median": 312.5,
+      "max": 312.5
+    },
+    "peak_rss_bytes": {
+      "median": 94474240,
+      "max": 94474240
+    },
+    "storage_bytes": {
+      "median": 113008,
+      "max": 113008
+    },
+    "file_count": {
+      "median": 6,
+      "max": 6
+    },
+    "first_get_latency_ms": {
+      "median": 13.01,
+      "max": 13.01
+    },
+    "second_get_latency_ms": {
+      "median": 3.278,
+      "max": 3.278
+    }
+  }
+}

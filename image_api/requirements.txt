@@ -1,0 +1,4 @@
+Django>=5.2,<6.0
+djangorestframework>=3.16,<4.0
+pyvips[binary]>=3.0,<4.0
+psutil>=7.0,<8.0

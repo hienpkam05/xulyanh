@@ -1,0 +1,138 @@
+{
+  "2k": {
+    "upload_latency_ms": {
+      "median": 319.906,
+      "max": 350.79
+    },
+    "processing_time_ms": {
+      "median": 319.906,
+      "max": 350.79
+    },
+    "process_cpu_time_ms": {
+      "median": 359.375,
+      "max": 375.0
+    },
+    "peak_rss_bytes": {
+      "median": 97632256,
+      "max": 99110912
+    },
+    "storage_bytes": {
+      "median": 113008,
+      "max": 113008
+    },
+    "file_count": {
+      "median": 6,
+      "max": 6
+    },
+    "first_get_latency_ms": {
+      "median": 2.791,
+      "max": 4.146
+    },
+    "second_get_latency_ms": {
+      "median": 2.921,
+      "max": 3.608
+    }
+  },
+  "4k": {
+    "upload_latency_ms": {
+      "median": 360.15,
+      "max": 367.196
+    },
+    "processing_time_ms": {
+      "median": 360.15,
+      "max": 367.196
+    },
+    "process_cpu_time_ms": {
+      "median": 375.0,
+      "max": 468.75
+    },
+    "peak_rss_bytes": {
+      "median": 125214720,
+      "max": 127623168
+    },
+    "storage_bytes": {
+      "median": 322918,
+      "max": 322918
+    },
+    "file_count": {
+      "median": 6,
+      "max": 6
+    },
+    "first_get_latency_ms": {
+      "median": 3.011,
+      "max": 3.066
+    },
+    "second_get_latency_ms": {
+      "median": 2.827,
+      "max": 2.955
+    }
+  },
+  "8k": {
+    "upload_latency_ms": {
+      "median": 809.295,
+      "max": 846.935
+    },
+    "processing_time_ms": {
+      "median": 809.295,
+      "max": 846.935
+    },
+    "process_cpu_time_ms": {
+      "median": 921.875,
+      "max": 953.125
+    },
+    "peak_rss_bytes": {
+      "median": 184905728,
+      "max": 203018240
+    },
+    "storage_bytes": {
+      "median": 1090978,
+      "max": 1090978
+    },
+    "file_count": {
+      "median": 6,
+      "max": 6
+    },
+    "first_get_latency_ms": {
+      "median": 2.791,
+      "max": 3.496
+    },
+    "second_get_latency_ms": {
+      "median": 2.821,
+      "max": 3.594
+    }
+  },
+  "12k": {
+    "upload_latency_ms": {
+      "median": 1323.615,
+      "max": 1376.482
+    },
+    "processing_time_ms": {
+      "median": 1323.615,
+      "max": 1376.482
+    },
+    "process_cpu_time_ms": {
+      "median": 1453.125,
+      "max": 1531.25
+    },
+    "peak_rss_bytes": {
+      "median": 263860224,
+      "max": 266211328
+    },
+    "storage_bytes": {
+      "median": 2216825,
+      "max": 2216825
+    },
+    "file_count": {
+      "median": 6,
+      "max": 6
+    },
+    "first_get_latency_ms": {
+      "median": 2.955,
+      "max": 4.19
+    },
+    "second_get_latency_ms": {
+      "median": 3.066,
+      "max": 4.53
+    }
+  }
+}

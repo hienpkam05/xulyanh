@@ -1,0 +1,34 @@
+[
+  {
+    "profile": "2k",
+    "width": 2048,
+    "height": 1024,
+    "format": "image/jpeg",
+    "bytes": 97610,
+    "sha256": "0a9d90590ad29debb541dc80dc6c9339b16eeb030d6e0fa2acf2b44585397ef6"
+  },
+  {
+    "profile": "4k",
+    "width": 4096,
+    "height": 2048,
+    "format": "image/jpeg",
+    "bytes": 310538,
+    "sha256": "70461774d75aeaee5220a4dab7dcb91771426e18e8a55cb8dd1244a0d925c1f9"
+  },
+  {
+    "profile": "8k",
+    "width": 8192,
+    "height": 4096,
+    "format": "image/jpeg",
+    "bytes": 1080458,
+    "sha256": "b2d67f521e3dea32d66625de7588e02e2956d10924fe507f63b8f3441fe46d7d"
+  },
+  {
+    "profile": "12k",
+    "width": 12000,
+    "height": 6000,
+    "format": "image/jpeg",
+    "bytes": 2207745,
+    "sha256": "df1c9033354aa12e050397e5bfa1d0d100d136149318d7e707eaf58f0f52f1aa"
+  }
+]
