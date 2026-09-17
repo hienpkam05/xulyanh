@@ -8,7 +8,9 @@
 ..\venv\Scripts\python.exe manage.py runserver
 ```
 
-Images are stored under `media/images/`. The API contract is documented in `../specs/05-http-api.md`; a Vue 3 client uploads with `FormData` and persists the returned asset `id`.
+Images are stored under `media/images/`. Each upload keeps its original validated format (`original.jpg`, `original.png`, or `original.webp`) and creates five derived WebP variants. The API contract is documented in `../specs/05-http-api.md`; a Vue 3 client uploads with `FormData` and persists the returned asset `id`.
+
+Database configuration uses one `DATABASE_URL` environment variable. Local development defaults to `sqlite:///db.sqlite3`; production can use `postgresql://user:password@host:5432/database`.
 
 ## Test
 

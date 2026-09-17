@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, ref } from 'vue'
 
-const apiBase = ref('/api/v1')
+const apiBase = ref(import.meta.env.VITE_API_BASE_URL || '/api/v1')
 const fileInput = ref(null)
 const selectedFile = ref(null)
 const processedFile = ref(null)
@@ -112,17 +112,17 @@ async function prepareForUpload() {
 }
 
 async function upload() {
-  if (!processedFile.value) {
+  if (!selectedFile.value) {
     showError('Hãy chọn một ảnh JPEG, PNG hoặc WebP trước.')
     return
   }
 
   clearError()
   isUploading.value = true
-  message.value = 'Đang upload và tạo đủ 5 variants…'
+  message.value = 'Đang upload ảnh gốc và tạo đủ 5 variants…'
   try {
     const formData = new FormData()
-    formData.append('file', processedFile.value)
+    formData.append('file', selectedFile.value)
     const response = await fetch(`${normalizedApiBase.value}/images`, {
       method: 'POST',
       body: formData,
@@ -229,9 +229,9 @@ onBeforeUnmount(() => {
             <span v-if="processedFile" class="size-chip accent">Sau Canvas: {{ formatBytes(processedFile.size) }}</span>
           </div>
         </div>
-        <p v-if="selectedFile && processedFile" class="compression-summary">{{ formatBytes(selectedFile.size) }} <span>→</span> {{ formatBytes(processedFile.size) }} sẽ được lưu lên Image API.</p>
-        <button class="primary" type="button" :disabled="isUploading || isPreparing || !processedFile" @click="upload">
-          {{ isUploading ? 'Đang xử lý…' : 'Upload & pregenerate' }}
+        <p v-if="selectedFile && processedFile" class="compression-summary">Bản gốc {{ formatBytes(selectedFile.size) }} sẽ được lưu lên Image API; WebP Canvas {{ formatBytes(processedFile.size) }} chỉ dùng để xem trước.</p>
+        <button class="primary" type="button" :disabled="isUploading || isPreparing || !selectedFile" @click="upload">
+          {{ isUploading ? 'Đang xử lý…' : 'Upload original & pregenerate' }}
         </button>
       </article>
 

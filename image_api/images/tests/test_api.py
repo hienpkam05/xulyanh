@@ -79,6 +79,18 @@ class ImageApiTests(TestCase):
         create_asset.assert_not_called()
         vips_loader.assert_not_called()
 
+    def test_original_streams_the_uploaded_png_without_conversion(self):
+        asset = self.create_ready_asset()
+
+        response = self.client.get(f"/api/v1/images/{asset.id}/original")
+        body = b"".join(response.streaming_content)
+        response.close()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response["Content-Type"], "image/png")
+        self.assertEqual(response["X-Content-Type-Options"], "nosniff")
+        self.assertTrue(body.startswith(b"\x89PNG"))
+
     def test_invalid_preset_and_missing_variant_return_404(self):
         asset = self.create_ready_asset()
         invalid = self.client.get(f"/api/v1/images/{asset.id}/custom")

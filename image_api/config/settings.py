@@ -2,9 +2,28 @@
 
 import os
 from pathlib import Path
-
+from urllib.parse import unquote, urlparse
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def load_local_env(path: Path) -> None:
+    """Load simple KEY=VALUE pairs from a local .env file without overriding real env vars."""
+    if not path.is_file():
+        return
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", maxsplit=1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            os.environ.setdefault(key, value)
+
+
+load_local_env(BASE_DIR / ".env")
 
 
 def env_bool(name: str, default: bool = False) -> bool:
@@ -56,12 +75,39 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 ASGI_APPLICATION = "config.asgi.application"
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.getenv("SQLITE_DATABASE_PATH", str(BASE_DIR / "db.sqlite3")),
-    }
-}
+def database_config() -> dict:
+    """Build Django's database setting from one DATABASE_URL environment variable."""
+    database_url = os.getenv("DATABASE_URL", "sqlite:///db.sqlite3")
+    parsed = urlparse(database_url)
+    scheme = parsed.scheme.lower()
+
+    if scheme in {"postgres", "postgresql"}:
+        database_name = parsed.path.lstrip("/")
+        if not database_name:
+            raise ValueError("DATABASE_URL must include a PostgreSQL database name.")
+        return {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": unquote(database_name),
+            "USER": unquote(parsed.username or ""),
+            "PASSWORD": unquote(parsed.password or ""),
+            "HOST": parsed.hostname or "localhost",
+            "PORT": str(parsed.port or 5432),
+            "CONN_MAX_AGE": int(os.getenv("DB_CONN_MAX_AGE", "60")),
+            "CONN_HEALTH_CHECKS": True,
+        }
+
+    if scheme == "sqlite":
+        database_name = unquote(parsed.path.lstrip("/"))
+        if database_name == ":memory:":
+            return {"ENGINE": "django.db.backends.sqlite3", "NAME": database_name}
+        if not database_name:
+            raise ValueError("DATABASE_URL must include a SQLite database path.")
+        return {"ENGINE": "django.db.backends.sqlite3", "NAME": str(BASE_DIR / database_name)}
+
+    raise ValueError("DATABASE_URL must start with postgresql:// or sqlite:///")
+
+
+DATABASES = {"default": database_config()}
 
 AUTH_PASSWORD_VALIDATORS = []
 LANGUAGE_CODE = "en-us"
@@ -85,4 +131,3 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.getenv("DATA_UPLOAD_MAX_MEMORY_SIZE", str(M
 FILE_UPLOAD_MAX_MEMORY_SIZE = int(os.getenv("FILE_UPLOAD_MAX_MEMORY_SIZE", str(2_621_440)))
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-

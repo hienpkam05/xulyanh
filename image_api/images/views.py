@@ -4,6 +4,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
+from pathlib import Path
 
 from images.services.processor import ImageProcessingError, create_image_asset
 from images.models import ImageAsset
@@ -114,6 +115,30 @@ def image_variant(request, asset_id: str, preset: str):
         return error_response("variant_not_available", "Image variant is not available.", status.HTTP_404_NOT_FOUND)
 
     response = FileResponse(variant_path.open("rb"), content_type="image/webp")
+    response["X-Content-Type-Options"] = "nosniff"
+    response["Cache-Control"] = "public, max-age=31536000, immutable"
+    return response
+
+
+@api_view(["GET"])
+def image_original(request, asset_id: str):
+    """Stream the original uploaded file without converting its format."""
+    asset = get_asset_or_404(asset_id)
+    if asset is None:
+        return error_response("asset_not_found", "Image asset was not found.", status.HTTP_404_NOT_FOUND)
+    if asset.status != ImageAsset.Status.READY:
+        return error_response("original_not_available", "The original image is not available.", status.HTTP_404_NOT_FOUND)
+
+    extension = Path(asset.original_path).suffix.lstrip(".")
+    try:
+        original_path = get_image_storage().open_original(asset.id, extension)
+    except StoragePathError:
+        return error_response("original_not_available", "The original image is not available.", status.HTTP_404_NOT_FOUND)
+
+    if not original_path.is_file():
+        return error_response("original_not_available", "The original image is not available.", status.HTTP_404_NOT_FOUND)
+
+    response = FileResponse(original_path.open("rb"), content_type=asset.mime_type)
     response["X-Content-Type-Options"] = "nosniff"
     response["Cache-Control"] = "public, max-age=31536000, immutable"
     return response

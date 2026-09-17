@@ -79,6 +79,13 @@ class LocalImageStorage:
     def open_variant(self, asset_id: str, preset: str) -> Path:
         return self.absolute_path(self.variant_path(asset_id, preset))
 
+    def open_original(self, asset_id: str, extension: str) -> Path:
+        """Return the original upload path for one validated asset."""
+        self._validate_asset_id(asset_id)
+        if extension not in {"jpg", "png", "webp"}:
+            raise StoragePathError("Unsupported original file extension.")
+        return self.absolute_path(Path(asset_id) / f"original.{extension}")
+
     def asset_exists(self, asset_id: str) -> bool:
         return self._asset_directory(asset_id).is_dir()
 
@@ -90,4 +97,3 @@ class LocalImageStorage:
 
 def get_image_storage() -> LocalImageStorage:
     return LocalImageStorage()
-

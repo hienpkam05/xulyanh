@@ -59,7 +59,18 @@ GET /api/v1/images/{id}/{preset}
 - Success: stream file, `200`, `Content-Type: image/webp`, `Content-Length` nếu biết, `X-Content-Type-Options: nosniff`.
 - Không chạy pyvips trong endpoint này. Có thể thêm `Cache-Control: public, max-age=31536000, immutable` khi URL/ID immutable.
 
-## 4. Delete
+## 4. Lấy ảnh gốc
+
+```http
+GET /api/v1/images/{id}/original
+```
+
+- Trả đúng file gốc đã upload và xác thực, giữ nguyên định dạng JPEG/PNG/WebP (`Content-Type` tương ứng).
+- Endpoint này không chuyển đổi, resize hoặc sinh ảnh mới.
+- Asset không tồn tại: `404 asset_not_found`; original không còn: `404 original_not_available`.
+- Response có `X-Content-Type-Options: nosniff`; có thể cache immutable vì ID không thay đổi.
+
+## 5. Delete
 
 ```http
 DELETE /api/v1/images/{id}
